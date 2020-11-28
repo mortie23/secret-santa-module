@@ -1,47 +1,55 @@
 'use strict';
 
-var logger = require('./logger');
-var nodemailer = require('nodemailer');
-var mg = require('nodemailer-mailgun-transport');
+const logger = require('./logger');
+const nodemailer = require('nodemailer');
+require('dotenv').config()
 
-var mailOptionsDef = {
-    from: 'secret@santa.com',
-    to: '',
-    subject: 'Secret Santa',
-    html: ''
+// get the email and password of the account to send from from the .env
+const useremail = process.env.useremail;
+const userpassword = process.env.userpassword;
+
+// the options
+var mailOptions = {
+  from: useremail,
+  to: '',
+  subject: 'Secret Santa',
+  html: ''
 };
 
-var sendTheMail = function(opts, transporter) {
-    var saveOpts = Object.assign(mailOptionsDef, opts);
-    transporter.sendMail(saveOpts, function(error, info) {
-      if (error) {
-          logger.error(error);
-          setTimeout(function() {
-              sendTheMail(saveOpts, transporter);
-          }, 3000);
-      } else {
-          logger.info('Message sent: ');
-          logger.info(info);
-      }
+var sendTheMail = (opts, transporter) => {
+  var saveOpts = Object.assign(mailOptions, opts);
+  transporter.sendMail(saveOpts, (error, info) => {
+    if (error) {
+      logger.error(error);
+      setTimeout(() => {
+        sendTheMail(saveOpts, transporter);
+      }, 3000);
+    } else {
+      logger.info('Message sent: ');
+      logger.info(info);
+    }
   });
 };
 
-var mail = function(options) {
-    return function(santasArray) {
-        return new Promise(function(resolve) {
-            if (!options) {
-                options = { auth: {} };
-            }
-            var auth = options;
-            var transporter = nodemailer.createTransport(mg(auth));
-            var sendingAddresses = santasArray.map(function(letter) {
-                var objectToProcess = { to: letter.giver, html: letter.string };
-                sendTheMail(objectToProcess, transporter);
-                return objectToProcess;
-            });
-            resolve(sendingAddresses);
-        });
-    };
+const mail = () => {
+  return (santasArray) => {
+    return new Promise((resolve) => {
+      // Using gmail
+      var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: useremail,
+          pass: userpassword
+        }
+      });
+      var sendingAddresses = santasArray.map((letter) => {
+        var objectToProcess = { to: letter.giver, html: letter.string };
+        sendTheMail(objectToProcess, transporter);
+        return objectToProcess;
+      });
+      resolve(sendingAddresses);
+    });
+  };
 };
 
 module.exports = mail;
