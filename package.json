@@ -2,20 +2,22 @@
   "name": "secret-santa-module",
   "version": "3.2.0",
   "description": "Secret santa shuffler and email sender",
-  "repository": "git@github.com:DKunin/secret-santa-module.git",
+  "repository": "git@github.com:mortie23/secret-santa-module.git",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js"
+    "secretsanta": "node secretsanta.js",
+    "confirmemail": "node confirmemail.js"
   },
   "author": "DKunin",
   "license": "MIT",
   "dependencies": {
+    "ava": "0.0.4",
     "blueimp-tmpl": "^3.3.0",
+    "dotenv": "^8.2.0",
+    "lodash": "^3.10.1",
     "neat-csv": "^1.1.0",
-    "nodemailer": "^1.10.0",
-    "nodemailer-mailgun-transport": "^1.0.1",
+    "nodemailer": "^6.4.16",
     "path-exists": "^2.1.0",
-    "secret-santa-shuffler": "git@github.com:DKunin/secret-santa-shuffler.git",
     "winston": "^2.1.1"
   }
 }
