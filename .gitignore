@@ -2,3 +2,5 @@ config/default.json
 node_modules
 lists
 logs
+.env
+email-list.csv
