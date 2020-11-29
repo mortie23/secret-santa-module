@@ -29,7 +29,7 @@ By default the both scripts `confirmemail.js` and `secretsanta.js` scripts have 
 // Example
 santaModule(list, {
   debug: true,
-  template: `<div><h2>It's the ${secretsantaname} Secret Santa!</h2><div>You should prepeare for <h3>{%=o.to%}</h3></div></div>`
+  template: `<div><h2>It's the ${secretsantaname} Secret Santa!</h2><div>You should prepare for <h3>{%=o.to%}</h3></div></div>`
 }).then(console.log);
 ```
 
